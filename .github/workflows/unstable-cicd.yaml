@@ -30,8 +30,8 @@ name: 🤪 Unstable integration & delivery
 
 on:
     push:
-        branches:
-             - main
+#        branches:
+#             - main
         paths-ignore:
             - 'CHANGELOG.md'
             - 'docs/requirements/**'

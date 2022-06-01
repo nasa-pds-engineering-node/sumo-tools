@@ -1,9 +1,6 @@
-# PDS Template Repository for Python
+# PDS4 Sub-Model Management
 
-This is the template repository for PDS's Python projects.
-
-This repository aims at being a base for new python repositories used in PDS. It guides developers to ease the initialization of a project and recommends preferred options to standardize developments and ease maintenance. Simply click the <kbd>Use this template</kbd> button ↑ (or use [this hyperlink](https://github.com/NASA-PDS/pds-template-repo-python/generate)).
-
+This repo contains tools and software needed for managing PDS4 Sub-Models (formerly known as Data Dictionaries)
 
 ## 🏃 Getting Started With This Template
 
