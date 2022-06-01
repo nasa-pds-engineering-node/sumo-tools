@@ -11,6 +11,8 @@ import os
 import sys
 import traceback
 
+from .util import get_latest_release
+
 from datetime import datetime
 from subprocess import Popen, CalledProcessError, PIPE, STDOUT
 
@@ -55,12 +57,6 @@ def find_dependency_ingest_ldds(ingest_ldd_src_dir):
 def find_primary_ingest_ldd(ingest_ldd_src_dir):
     ingest_ldd = glob.glob(os.path.join(ingest_ldd_src_dir, '*IngestLDD*.xml'))
     return ingest_ldd
-
-
-def get_latest_release(token, dev=False):
-    _tags = Tags(GITHUB_ORG, GITHUB_REPO, token=token)
-    return _tags._repo.release_from_tag(_tags.get_latest_tag(dev=dev))
-
 
 def prep_ldd_output_path(ldd_output_path):
     # Crawl two directories up and remove everything
@@ -139,21 +135,20 @@ def main():
         sys.exit(1)
 
     try:
-
         lddtool_args = [LDDTOOL_DEFAULT_ARGS]
 
         if args.with_pds4_version:
             lddtool_args.extend(['-V', convert_pds4_version_to_alpha(args.with_pds4_version)])
 
-        # Get the IngestLDDs
-        # lddtool_args.extend()
-
         # cleanup the LDD Output area before generating LDDs
         prep_ldd_output_path(args.ldd_output_path)
-        
-        pkg = download_asset(get_latest_release(token, dev=args.use_lddtool_unstable), 
-                                                args.deploy_dir, startswith='lddtool',
-                                                file_extension='.zip')
+
+        latest_release = get_latest_release(token, GITHUB_ORG, GITHUB_REPO)
+        pkg = download_asset(latest_release,
+                             args.deploy_dir,
+                             startswith='lddtool',
+                             file_extension='.zip')
+
         sw_dir = unzip_asset(pkg, args.deploy_dir)
 
         # Generate dependency LDDs
