@@ -47,11 +47,15 @@ def exec_validate(executable, args, data_path, pds4_version, failure_expected=Fa
     # Test valid  vs invalid data.
     # test_data should not be None because the schema generation should at least produce 1 XML
     for key, files in test_data.items():
-        args.append('-t')
-        args.extend(files)
+        if not files:
+            continue
+
+        validate_args = args.copy()
+        validate_args.append('-t')
+        validate_args.extend(files)
 
         cmd = ['bash', executable]
-        cmd.extend(args)
+        cmd.extend(validate_args)
         with Popen(cmd, stdout=PIPE, stderr=STDOUT, bufsize=1, universal_newlines=True) as p:
             with open(log_out, 'w') as f:
                 for line in p.stdout:
