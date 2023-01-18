@@ -15,12 +15,11 @@ import sys
 from datetime import datetime
 from subprocess import Popen, CalledProcessError, PIPE, STDOUT
 from urllib.parse import urljoin
-from xml.etree import ElementTree as et
 
 from .util import get_latest_release
 
 from pds_github_util.assets.assets import download_asset, unzip_asset
-from pds_github_util.utils.ldd_gen import convert_pds4_version_to_alpha
+from pds_github_util.release.ldd_release import convert_pds4_version_to_alpha
 from pds_github_util.utils import addStandardArguments
 
 GITHUB_ORG = 'NASA-PDS'
@@ -46,6 +45,7 @@ def exec_validate(executable, args, data_path, pds4_version, failure_expected=Fa
 
     # Test valid  vs invalid data.
     # test_data should not be None because the schema generation should at least produce 1 XML
+    success = False
     for key, files in test_data.items():
         if not files:
             continue
